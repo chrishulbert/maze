@@ -88,48 +88,103 @@ function main() {
     }
     
     // Draw it:
-    let drawing = '';
-    drawing += '█ ';
-    for (let x=0; x<width-1; x++) {
-        drawing += '██';
-    }
-    drawing += '█\n';
+    let lines = [];
+    lines.push('█' + '██'.repeat(width-1) + '↑█');
     for (let y=0; y<height; y++) {
-        drawing += '█'; // The leftmost wall is always set.
+        // Top line, with the right wall:
+        let topLine = '█'; // The leftmost wall is always set.
         for (let x=0; x<width; x++) {
             const cell = grid[y * width + x];
-            if ((cell & 1) === 0) { // Right wall is cleared.
-                drawing += '  ';
+            if ((cell & 1) === 0) {
+                topLine += '  '; // Right wall is cleared.
             } else {
-                drawing += ' █';
+                topLine += ' █'; // Right wall is present.
             }
         }
-        drawing += '\n';
-        if (y===height-1) {
-            drawing += '█';
-        } else {
-            drawing += '█'; // The leftmost wall is always set.
-        }
+        lines.push(topLine);
+
+        // Bottom line, with the underneath wall:
+        let botLine = '█'; // The leftmost wall is always set.
         for (let x=0; x<width; x++) {
             const cell = grid[y * width + x];
-            if ((cell & 2) === 0) { // Bottom wall is cleared.
-                drawing += ' ';
+            if ((cell & 2) === 0) {
+                botLine += ' '; // Bottom wall is cleared.
             } else {
-                if (x===width-1 && y===height-1) {
-                    drawing += ' ';
+                // Bottom wall is present.
+                if (x===0 && y===height-1) {
+                    botLine += '↑'; // Entrance to the maze.
                 } else {
-                    drawing += '█';
+                    botLine += '█';
                 }
             }
-            if (x===width-1 && y===height-1) {
-                drawing += '█';
-            } else {
-                drawing += '█';
-            }
+            botLine += '█'; // Bottom-right of a cell always has a wall.
         }
-        drawing += '\n';
+        lines.push(botLine);
     }
 
+    // Normalise the lines into box art:
+    function wallAt(x, y) {
+        if (0 <= x && x < lines[0].length && 0 <= y && y < lines.length) {
+            return lines[y][x] == '█';
+        } else {
+            return false;
+        }
+    }
+    let drawing = '';
+    for (let y=0; y<lines.length; y++) {
+        for (let x=0; x<lines[0].length; x++) {
+            //   a
+            // b c d
+            //   e
+            const a = wallAt(x, y-1);
+            const b = wallAt(x-1, y);
+            const c = wallAt(x, y);
+            const d = wallAt(x+1, y);
+            const e = wallAt(x, y+1);
+            let o = lines[y][x]; // Output.
+            if (c) {
+                if (a && b && d && e) {
+                    o = '┿';
+                } else if (a && b && d && !e) {
+                    o = '┷';
+                } else if (!a && b && d && e) {
+                    o = '┯';
+                } else if (a && !b && d && e) {
+                    o = '┝';
+                } else if (a && b && !d && e) {
+                    o = '┥';
+                } else if (a && b && !d && !e) {
+                    o = '┙';
+                } else if (a && !b && d && !e) {
+                    o = '┕';
+                } else if (!a && b && !d && e) {
+                    o = '┑';
+                } else if (!a && !b && d && e) {
+                    o = '┍';
+                } else if (a && !b && !d && e) {
+                    o = '│';
+                } else if (!a && b && d && !e) {
+                    o = '━';
+                } else if (a && !b && !d && !e) {
+                    o = '╵';
+                } else if (!a && !b && !d && e) {
+                    o = '╷';
+                } else if (!a && b && !d && !e) {
+                    o = '╸';
+                } else if (!a && !b && d && !e) {
+                    o = '╺';
+                } else if (!a && !b && !d && !e) {
+                    o = '┿';
+                } else {
+                    o = '█';
+                }
+            }
+            drawing += o;
+        }
+        if (y < lines.length-1) {
+            drawing += '\n';
+        }
+    }
     const div = document.getElementById('maze');
     div.textContent = drawing;
 }

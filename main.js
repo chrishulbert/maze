@@ -1,5 +1,5 @@
-const width = 32;
-const height = 21;
+const width = 64;
+const height = 42;
 
 // Directions:
 const North = 0;

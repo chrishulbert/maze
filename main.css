@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+    height: 100vh;
+    overflow: hidden;
+    font-family: var(--font);
+    font-size: 25px;
+    font-weight: var(--font-weight-normal);
+}
+button {
+    font: inherit;
+}
+body {
+    background: var(--background);
+    background-color: var(--background); /* Safari status bars */
+    color: var(--foreground);
+    position: relative; /* So the absolute children anchor to this */
+}
+:root { /* https://clrs.cc */
+    --background: #fff;
+    --foreground: #000;
+    --color-navy: #001F3F;
+    --color-blue: #0074D9;
+    --color-aqua: #7FDBFF;
+    --color-teal: #39CCCC;
+    --color-olive: #3D9970;
+    --color-green: #2ECC40;
+    --color-lime: #01FF70;
+    --color-yellow: #FFD800;
+    --color-orange: #FF851B;
+    --color-red: #FF4136;
+    --color-fuchsia: #F012BE;
+    --color-purple: #B10DC9;
+    --color-maroon: #85144B;
+    --color-white: #fff;
+    --color-silver: #DDDDDD;
+    --color-gray: #AAAAAA;
+    --color-black: #000;
+    /* --font: "Metal Mania", "Palatino Linotype", Palatino, Palladio, "URW Palladio L", "Book Antiqua", Baskerville, "Bookman Old Style", "Bitstream Charter", "Nimbus Roman No9 L", Garamond, "Apple Garamond", "ITC Garamond Narrow", "New Century Schoolbook", "Century Schoolbook", "Century Schoolbook L", Georgia, serif; */
+    --font: "Noticia Text", "Palatino Linotype", Palatino, Palladio, "URW Palladio L", "Book Antiqua", Baskerville, "Bookman Old Style", "Bitstream Charter", "Nimbus Roman No9 L", Garamond, "Apple Garamond", "ITC Garamond Narrow", "New Century Schoolbook", "Century Schoolbook", "Century Schoolbook L", Georgia, serif;
+    --font-weight-normal: 400,
+}
+
+#maze {
+    margin-top: 1rem;
+    text-align: center;
+    font-family: monospace;
+    line-height: 1.0;
+    transform: scaleY(0.6);
+    transform-origin: top;
+}
